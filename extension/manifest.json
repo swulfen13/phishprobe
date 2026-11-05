@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "PhishProbe – Link prüfen",
+  "version": "1.0.0",
+  "description": "Prüft verdächtige Links in einer Wegwerf-Sandbox auf Vultr, ohne dass du sie selbst öffnen musst.",
+  "permissions": ["contextMenus", "storage"],
+  "host_permissions": [
+    "https://192.248.159.54.nip.io/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PhishProbe"
+  }
+}
