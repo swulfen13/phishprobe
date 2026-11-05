@@ -4,11 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createScan } from "@/lib/api";
 
+// Demo pages are hosted externally (GitHub Pages) so the sandbox reaches them
+// over the real internet — scanning the VM's own public IP fails via NAT hairpin.
+const DEMO = "https://swulfen13.github.io/phishprobe/demo/fake-phish";
 const EXAMPLES: { label: string; url: string; note: string }[] = [
-  { label: "🐦 Fake-Paketdienst (Demo)", url: "/demo/fake-phish/parcel/index.html", note: "Kartendaten-Formular" },
-  { label: "🪤 Prompt-Injection (Demo)", url: "/demo/fake-phish/injection/index.html", note: "täuscht die KI" },
-  { label: "↪️ Redirect-Kette (Demo)", url: "/demo/fake-phish/redirect/1.html", note: "4 Hops" },
-  { label: "📥 Auto-Download (Demo)", url: "/demo/fake-phish/auto-download/index.html", note: "blockiert" },
+  { label: "🐦 Fake-Paketdienst (Demo)", url: `${DEMO}/parcel/index.html`, note: "Kartendaten-Formular" },
+  { label: "🪤 Prompt-Injection (Demo)", url: `${DEMO}/injection/index.html`, note: "täuscht die KI" },
+  { label: "↪️ Redirect-Kette (Demo)", url: `${DEMO}/redirect/1.html`, note: "4 Hops" },
+  { label: "📥 Auto-Download (Demo)", url: `${DEMO}/auto-download/index.html`, note: "blockiert" },
   { label: "✅ Wikipedia (harmlos)", url: "https://en.wikipedia.org/wiki/Phishing", note: "zum Vergleich" },
 ];
 
