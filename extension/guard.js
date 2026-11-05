@@ -10,14 +10,66 @@ const DEFAULT_BASE = "https://192.248.159.54.nip.io";
 let enabled = false;
 let base = DEFAULT_BASE;
 
-chrome.storage.sync.get(["secureMode", "apiBase"], (r) => {
+let showBadge = true;
+
+chrome.storage.sync.get(["secureMode", "apiBase", "showBadge"], (r) => {
   enabled = !!r.secureMode;
   base = (r.apiBase || DEFAULT_BASE).replace(/\/$/, "");
+  showBadge = r.showBadge !== false; // default on
+  if (showBadge) renderPageBadge();
 });
 chrome.storage.onChanged.addListener((ch) => {
   if (ch.secureMode) enabled = ch.secureMode.newValue;
   if (ch.apiBase) base = (ch.apiBase.newValue || DEFAULT_BASE).replace(/\/$/, "");
+  if (ch.showBadge) {
+    showBadge = ch.showBadge.newValue !== false;
+    if (showBadge) renderPageBadge();
+    else document.getElementById("phishprobe-badge")?.remove();
+  }
 });
+
+// Small always-on traffic-light badge, top-right, showing the current page's
+// quick-check status (🟢 safe / 🟡 suspicious / 🔴 phishing). Click = deep scan.
+async function renderPageBadge() {
+  if (!/^https?:/i.test(location.href)) return;
+  if (location.href.startsWith(base)) return; // don't badge our own app
+  const level = await quick(location.href);
+  if (level === null) return;
+  const META = {
+    safe: { dot: "#22c55e", text: "OK", fg: "#bbf7d0" },
+    suspicious: { dot: "#f59e0b", text: "verdächtig", fg: "#fde68a" },
+    phishing: { dot: "#ef4444", text: "Achtung", fg: "#fecaca" },
+  };
+  const m = META[level] || META.suspicious;
+  document.getElementById("phishprobe-badge")?.remove();
+  const host = document.createElement("div");
+  host.id = "phishprobe-badge";
+  host.attachShadow({ mode: "open" });
+  host.shadowRoot.innerHTML = `
+    <div id="pill" style="all:initial;position:fixed;top:12px;right:12px;z-index:2147483647;
+      display:flex;align-items:center;gap:8px;background:#111a2e;border:1px solid #1e2a44;
+      border-radius:999px;padding:7px 13px;font-family:system-ui,Segoe UI,sans-serif;
+      box-shadow:0 8px 24px -8px rgba(0,0,0,.6);cursor:pointer;opacity:.95;transition:opacity .2s">
+      <span style="width:11px;height:11px;border-radius:50%;background:${m.dot};box-shadow:0 0 10px ${m.dot}"></span>
+      <span style="font-size:12.5px;font-weight:700;color:#e2e8f0">PhishProbe</span>
+      <span style="font-size:12.5px;color:${m.fg}">${m.text}</span>
+    </div>`;
+  (document.body || document.documentElement).appendChild(host);
+  const pill = host.shadowRoot.getElementById("pill");
+  // fade to unobtrusive after a few seconds; restore on hover
+  setTimeout(() => (pill.style.opacity = ".55"), 4000);
+  pill.onmouseenter = () => (pill.style.opacity = ".95");
+  pill.onmouseleave = () => (pill.style.opacity = ".55");
+  pill.onclick = async () => {
+    try {
+      const res = await fetch(`${base}/api/scans`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: location.href, deep: true }),
+      }).then((r) => r.json());
+      if (res.scan_id) window.open(`${base}/scans/${res.scan_id}`, "_blank");
+    } catch { window.open(base, "_blank"); }
+  };
+}
 
 document.addEventListener("click", onClick, true); // capture phase, before the page
 

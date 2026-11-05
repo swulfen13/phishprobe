@@ -32,6 +32,14 @@ $("secure").addEventListener("change", (e) => {
   chrome.storage.sync.set({ secureMode: e.target.checked });
 });
 
+// Page badge toggle (default on).
+chrome.storage.sync.get("showBadge", ({ showBadge }) => {
+  $("badge").checked = showBadge !== false;
+});
+$("badge").addEventListener("change", (e) => {
+  chrome.storage.sync.set({ showBadge: e.target.checked });
+});
+
 $("go").addEventListener("click", run);
 $("url").addEventListener("keydown", (e) => { if (e.key === "Enter") run(); });
 

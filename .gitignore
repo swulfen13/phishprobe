@@ -35,4 +35,5 @@ caddy_config/
 # brag video: keep deliverables + small sources, drop heavy intermediates
 brag-output/work/frames/
 brag-output/work/*.wav
+brag-output/work/vo/
 brag-output/work/poster_src.png

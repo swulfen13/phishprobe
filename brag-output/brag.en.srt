@@ -1,0 +1,39 @@
+1
+00:00:00,250 --> 00:00:03,900
+A fake parcel text. One tap could leak your card.
+
+2
+00:00:04,250 --> 00:00:07,380
+PhishProbe checks the link for you — without opening it.
+
+3
+00:00:07,750 --> 00:00:11,890
+First a fast URL check, then a deep scan in a sandbox on Vultr.
+
+4
+00:00:12,250 --> 00:00:17,660
+The agent opens it, follows redirects, reads the forms — and calls it: phishing.
+
+5
+00:00:18,750 --> 00:00:23,850
+Some pages hide text to fool the AI into saying "safe". That itself is a red flag.
+
+6
+00:00:24,250 --> 00:00:30,090
+Every scan is sandboxed, limited, and destroyed afterward. Blast radius: zero.
+
+7
+00:00:30,750 --> 00:00:35,350
+A normal link? Green. Calibrated, not paranoid.
+
+8
+00:00:35,500 --> 00:00:39,410
+It's also a Chrome extension — right-click any link to check it.
+
+9
+00:00:40,250 --> 00:00:44,780
+A badge on every page shows it at a glance: green for safe, red for danger.
+
+10
+00:00:46,700 --> 00:00:51,880
+PhishProbe. One link, zero blast radius. Built on Vultr.
