@@ -14,7 +14,7 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./demo/fake-phish:/srv/demo:ro
+      - ./demo:/srv/demo:ro
       - caddy_data:/data
       - caddy_config:/config
     environment:
@@ -50,8 +50,6 @@ services:
       - frontend
       # Same network as the throwaway sandboxes so the api can drive them.
       - sandbox-net
-    depends_on:
-      - sandbox-build
 
   # Build-only: produces the sandbox image, never stays running.
   sandbox-build:
