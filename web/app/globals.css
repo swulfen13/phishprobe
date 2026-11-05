@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 50% -10%, #16233f 0%, #0b1120 55%);
+  min-height: 100vh;
+}
+
+/* Subtle fade-in for streamed scan steps. */
+@keyframes slidein {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slidein {
+  animation: slidein 0.28s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-slidein { animation: none; }
+}

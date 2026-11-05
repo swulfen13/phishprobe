@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhishProbe – Demo-Seiten (fiktive Marke)</title>
+<style>
+  body { font:16px/1.6 system-ui, sans-serif; max-width:640px; margin:40px auto; padding:0 20px; color:#1e293b; }
+  h1 { font-size:22px; } a { color:#2563eb; } li { margin:8px 0; }
+  .note { background:#fef9c3; border:1px solid #fde68a; border-radius:8px; padding:12px; font-size:14px; }
+</style></head>
+<body>
+  <h1>🐦 PhishProbe Demo-Seiten</h1>
+  <p class="note">Alle Seiten nutzen die <strong>frei erfundene Marke „ParcelPigeon Express"</strong>.
+  Keine echten Firmen, Logos oder Banken werden imitiert. Nur für das Demo-Video.</p>
+  <ul>
+    <li><a href="./parcel/index.html">Fake-Paketdienst mit Kartendaten-Formular</a> → erwartet 🔴</li>
+    <li><a href="./injection/index.html">Prompt-Injection-Seite (versteckter Text an die KI)</a> → erwartet 🔴</li>
+    <li><a href="./resource-bomb/index.html">Ressourcen-Bombe (Speicher/CPU)</a> → Container wird gekillt</li>
+    <li><a href="./auto-download/index.html">Auto-Download einer Dummy-.exe</a> → blockiert &amp; protokolliert</li>
+    <li><a href="./redirect/1.html">Redirect-Kette (4 Hops → Phishing)</a> → Kette sichtbar</li>
+  </ul>
+  <p>Zum Vergleich ein echter, harmloser Link: <a href="https://en.wikipedia.org/wiki/Phishing">Wikipedia</a> → erwartet 🟢</p>
+</body></html>

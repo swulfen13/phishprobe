@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParcelPigeon Express – Sendungsverfolgung</title>
+<!--
+  DEMO PHISHING PAGE for the PhishProbe video. Fictional brand only.
+  "ParcelPigeon Express" does not exist; no real company is imitated.
+  Expected verdict: PHISHING (brand-imitating page asking for card data).
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { font: 16px/1.5 system-ui, sans-serif; margin:0; background:#eef2f7; color:#1e293b; }
+  header { background:#f59e0b; color:#fff; padding:14px 20px; display:flex; align-items:center; gap:10px; font-weight:700; }
+  .card { max-width:460px; margin:28px auto; background:#fff; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.08); padding:26px; }
+  h1 { font-size:20px; margin:0 0 6px; }
+  .track { background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px; font-size:14px; margin:14px 0; }
+  label { display:block; font-size:13px; margin:12px 0 4px; font-weight:600; }
+  input { width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; }
+  .row { display:flex; gap:10px; }
+  button { width:100%; margin-top:18px; padding:12px; background:#f59e0b; color:#fff; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; }
+  .fee { font-size:22px; font-weight:800; color:#b91c1c; }
+</style></head>
+<body>
+  <header>🐦 ParcelPigeon Express</header>
+  <div class="card">
+    <h1>Ihr Paket konnte nicht zugestellt werden</h1>
+    <div class="track">Sendungsnummer <strong>PPX-8842-DE</strong> liegt im Zolllager.
+    Zur erneuten Zustellung ist eine Gebühr von <span class="fee">2,99 €</span> fällig.</div>
+    <form action="/demo/parcel/collect" method="post">
+      <label>Vollständiger Name</label>
+      <input name="name" placeholder="Max Mustermann" autocomplete="name">
+      <label>Lieferadresse</label>
+      <input name="address" placeholder="Musterstraße 1, 12345 Berlin">
+      <label>Kartennummer</label>
+      <input name="cardnumber" placeholder="1234 5678 9012 3456" inputmode="numeric" autocomplete="cc-number">
+      <div class="row">
+        <div style="flex:1"><label>Gültig bis</label><input name="cc-exp" placeholder="MM/JJ" autocomplete="cc-exp"></div>
+        <div style="flex:1"><label>CVV</label><input name="cvv" placeholder="123" autocomplete="cc-csc"></div>
+      </div>
+      <button type="submit">2,99 € zahlen &amp; Paket freigeben</button>
+    </form>
+  </div>
+</body></html>

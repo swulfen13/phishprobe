@@ -1,0 +1,76 @@
+# PhishProbe – runs on the Vultr Cloud Compute VM.
+#
+# Services that stay up: caddy (TLS) -> web (Next.js) + api (FastAPI).
+# The sandbox is NOT a long-running service: the api launches one throwaway
+# container per scan via the Docker SDK and destroys it afterwards. Its image
+# is built here under the "tools" profile (`docker compose --profile tools build`).
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./demo/fake-phish:/srv/demo:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - PUBLIC_DOMAIN=${PUBLIC_DOMAIN:-localhost}
+    depends_on:
+      - web
+      - api
+    networks:
+      - frontend
+
+  web:
+    build:
+      context: ./web
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_BASE=${NEXT_PUBLIC_API_BASE:-/api}
+    networks:
+      - frontend
+
+  api:
+    build:
+      context: ./api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - DATA_DIR=/data
+    volumes:
+      # Docker socket: the api launches + destroys sandbox containers.
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    networks:
+      - frontend
+      # Same network as the throwaway sandboxes so the api can drive them.
+      - sandbox-net
+    depends_on:
+      - sandbox-build
+
+  # Build-only: produces the sandbox image, never stays running.
+  sandbox-build:
+    build:
+      context: ./sandbox
+    image: ${SANDBOX_IMAGE:-phishprobe-sandbox:latest}
+    profiles: ["tools"]
+    command: ["true"]
+
+networks:
+  frontend:
+    driver: bridge
+  sandbox-net:
+    name: ${SANDBOX_NETWORK:-phishprobe-sandbox-net}
+    driver: bridge
+    # Egress to the internet stays open (the sandbox must reach the target
+    # URL); access to private ranges is blocked by scripts/sandbox-firewall.sh
+    # on the host and by SSRF checks inside the sandbox runner.
+
+volumes:
+  caddy_data:
+  caddy_config:

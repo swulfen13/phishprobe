@@ -1,0 +1,27 @@
+# Auto-HTTPS reverse proxy for PhishProbe.
+# Set PUBLIC_DOMAIN in .env to your Vultr VM hostname; Caddy fetches a Let's
+# Encrypt cert automatically. For local testing PUBLIC_DOMAIN defaults to
+# `localhost` (Caddy serves a self-signed cert).
+
+{$PUBLIC_DOMAIN} {
+	encode gzip
+
+	# API: REST + SSE. Keep the /api prefix (routes are mounted under /api).
+	# SSE needs buffering disabled so events stream live.
+	handle /api/* {
+		reverse_proxy api:8000 {
+			flush_interval -1
+		}
+	}
+
+	# Demo phishing pages (fictional brand), served statically for the video.
+	handle_path /demo/* {
+		root * /srv/demo
+		file_server
+	}
+
+	# Everything else -> Next.js frontend.
+	handle {
+		reverse_proxy web:3000
+	}
+}

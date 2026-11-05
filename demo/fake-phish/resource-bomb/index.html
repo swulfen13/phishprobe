@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParcelPigeon Express – Lädt …</title>
+<!--
+  DEMO: resource-exhaustion page for the PhishProbe video. Fictional brand.
+  It tries to exhaust memory/CPU. The sandbox's mem/cpu/time limits must stop
+  it: the container is killed, the orchestrator records a containment event,
+  and the app keeps running. Nothing escapes the sandbox.
+-->
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin:0; display:grid; place-items:center; height:100vh; background:#111827; color:#e5e7eb; }
+</style></head>
+<body>
+  <div>🐦 ParcelPigeon Express<br>Sendung wird geladen …</div>
+  <script>
+    // Memory bomb: grow unbounded until the cgroup memory limit kills the
+    // process. Also pegs the CPU. The sandbox limits contain both.
+    const hog = [];
+    function boom() {
+      try {
+        while (true) {
+          hog.push(new Array(1e6).fill('PhishProbe-resource-bomb-'.repeat(8)));
+        }
+      } catch (e) {
+        // If allocation throws before the OOM killer fires, spin the CPU.
+        while (true) { Math.sqrt(Math.random()); }
+      }
+    }
+    boom();
+  </script>
+</body></html>

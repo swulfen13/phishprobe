@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParcelPigeon Express – Tracking-App</title>
+<!--
+  DEMO: drive-by download page for the PhishProbe video. Fictional brand.
+  It auto-triggers a download of a harmless dummy "app.exe". The sandbox runs
+  with accept_downloads=False, so the download is blocked and only logged.
+-->
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin:0; background:#f8fafc; color:#1e293b; display:grid; place-items:center; height:100vh; }
+  .card { background:#fff; padding:28px; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.08); max-width:380px; text-align:center; }
+</style></head>
+<body>
+  <div class="card">
+    <h1>🐦 ParcelPigeon Tracking-App</h1>
+    <p>Ihr Download startet automatisch. Bitte installieren Sie die App, um Ihr Paket zu verfolgen.</p>
+  </div>
+  <script>
+    // Auto-trigger a download of a tiny harmless dummy "executable".
+    window.addEventListener('load', () => {
+      const blob = new Blob(['MZ harmless-phishprobe-demo-dummy'], {type: 'application/octet-stream'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'ParcelPigeon-Tracker-Setup.exe';
+      document.body.appendChild(a);
+      a.click();
+    });
+  </script>
+</body></html>
