@@ -24,6 +24,14 @@ $("apiBase").addEventListener("change", (e) => {
   chrome.storage.sync.set({ apiBase: e.target.value.trim() });
 });
 
+// Secure mode toggle — the guard content script reads this from storage.
+chrome.storage.sync.get("secureMode", ({ secureMode }) => {
+  $("secure").checked = !!secureMode;
+});
+$("secure").addEventListener("change", (e) => {
+  chrome.storage.sync.set({ secureMode: e.target.checked });
+});
+
 $("go").addEventListener("click", run);
 $("url").addEventListener("keydown", (e) => { if (e.key === "Enter") run(); });
 

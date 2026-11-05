@@ -1,9 +1,19 @@
 # PhishProbe Chrome Extension (MV3)
 
-Right-click any link → **"Mit PhishProbe prüfen"**, or paste a link into the
-toolbar popup. The extension runs the fast quick-check for an instant badge
-(🟢/🟡/🔴) and starts a full deep scan in the Vultr sandbox, opening the live
-result page.
+Two ways to use it:
+
+**1. Manual** — right-click any link → **"Mit PhishProbe prüfen"**, or paste a
+link into the toolbar popup. Runs the fast quick-check for an instant badge
+(🟢/🟡/🔴) and starts a full deep scan in the Vultr sandbox, opening the result.
+
+**2. Secure-Modus** (toggle in the popup) — every left-click on an http(s) link
+is held back, run through the quick-check first, and **before the page loads** a
+warning appears if the link looks suspicious or like phishing. You can then open
+it in the sandbox, proceed anyway, or cancel.
+
+> Scope of Secure-Modus: it intercepts link *clicks* (the main vector). It does
+> not block typed address-bar navigations or purely programmatic redirects —
+> MV3 has no synchronous "ask a server, then block" navigation hook.
 
 ## Install (developer mode)
 

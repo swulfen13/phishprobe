@@ -12,6 +12,9 @@
   .muted { color:#64748b; font-size:12px; margin-top:10px; }
   details { margin-top:10px; } summary { cursor:pointer; font-size:12px; color:#64748b; }
   .settings input { font-size:12px; margin-top:6px; }
+  .secure { display:flex; gap:10px; align-items:flex-start; margin-top:12px; padding:10px;
+    border:1px solid #cbd5e1; border-radius:10px; cursor:pointer; font-size:13px; }
+  .secure input { width:auto; margin-top:2px; }
 </style></head>
 <body>
   <h1>🛡️ PhishProbe</h1>
@@ -19,6 +22,11 @@
   <button id="go">Prüfen</button>
   <div id="result" class="result"></div>
   <div class="muted">Startet einen Deep-Scan in der Vultr-Sandbox und öffnet das Ergebnis.</div>
+
+  <label class="secure">
+    <input type="checkbox" id="secure">
+    <span><b>Secure-Modus</b><br><span class="muted" style="margin:0">Jeden Link vor dem Öffnen automatisch prüfen</span></span>
+  </label>
   <details class="settings">
     <summary>Server-Adresse</summary>
     <input id="apiBase" type="text" placeholder="https://…">
