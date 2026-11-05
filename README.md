@@ -221,8 +221,8 @@ Invalid model output is retried once, then falls back to a heuristic 🟡 with a
 
 ## Links
 
-- **Demo URL:** _TODO: https://<PUBLIC_DOMAIN>/_
-- **Demo video:** _TODO_
+- **Demo URL:** https://192.248.159.54.nip.io/ (live on a Vultr VM, auto-HTTPS via nip.io)
+- **Demo video:** `brag-output/brag.mp4` (20s launch video; upload to the submission)
 - **License:** MIT (see `LICENSE`)
 
 ## Disclaimer

@@ -1,0 +1,5 @@
+Phishing-SMS bekommen? Klick nicht drauf — lass PhishProbe den Link öffnen.
+
+Ein KI-Agent öffnet den verdächtigen Link in einer Wegwerf-Sandbox auf Vultr, folgt den Weiterleitungen, macht Screenshots und sagt dir in einfacher Sprache: 🟢 harmlos, 🟡 verdächtig oder 🔴 Phishing. Die Sandbox zerstört sich nach jedem Scan — keine Secrets, interne IPs gesperrt. Blast radius: zero.
+
+Live: https://192.248.159.54.nip.io · Built on Vultr.

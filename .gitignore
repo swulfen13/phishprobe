@@ -31,3 +31,8 @@ Thumbs.db
 # Caddy state
 caddy_data/
 caddy_config/
+
+# brag video: keep deliverables + small sources, drop heavy intermediates
+brag-output/work/frames/
+brag-output/work/*.wav
+brag-output/work/poster_src.png
