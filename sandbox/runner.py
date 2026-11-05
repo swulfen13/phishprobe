@@ -311,9 +311,11 @@ async def scan_url(url: str, action_timeout: float) -> dict:
 def _enrich_dom(dom: dict) -> dict:
     """Add injection detection over all extracted text (visible + hidden)."""
     dom = dict(dom or {})
+    # Only HIDDEN/off-screen text + comments count as injection. Visible body
+    # text that merely discusses these phrases (e.g. a Wikipedia article about
+    # phishing) is legitimate content and must not trigger a false positive.
     haystack = " ".join(
         [
-            dom.get("visible_text", ""),
             dom.get("hidden_text", ""),
             dom.get("title", ""),
         ]

@@ -61,7 +61,7 @@ async def run_vision(scan: dict) -> VisionResult | None:
             model=llm.model_vision(),
             system=prompts.VISION_SYSTEM,
             user_content=content,
-            max_tokens=400,
+            max_tokens=1200,
         )
         return VisionResult.model_validate(data)
     except (ValueError, ValidationError, Exception):
@@ -111,7 +111,7 @@ async def _llm_verdict(context: dict) -> Verdict | None:
                 model=llm.model_text(),
                 system=prompts.VERDICT_SYSTEM,
                 user_content=user_content,
-                max_tokens=900,
+                max_tokens=2000,
             )
             return Verdict.model_validate(data)
         except (ValueError, ValidationError):

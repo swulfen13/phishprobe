@@ -72,7 +72,13 @@ async def chat_json(
         max_tokens=max_tokens,
         response_format={"type": "json_object"},
     )
-    text = resp.choices[0].message.content or ""
+    message = resp.choices[0].message
+    text = message.content or ""
+    if not text.strip():
+        # Reasoning models (e.g. GLM) may leave `content` empty and put the
+        # answer in a non-standard `reasoning_content` field.
+        extra = getattr(message, "model_extra", None) or {}
+        text = extra.get("reasoning_content") or getattr(message, "reasoning_content", "") or ""
     return _parse_json(text)
 
 
