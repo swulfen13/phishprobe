@@ -6,7 +6,7 @@ contrast scene, resolves on the outro.
 import math, struct, wave
 
 SR = 44100
-DUR = 20.0
+DUR = 40.0
 BPM = 120.0
 BEAT = 60.0 / BPM            # 0.5s
 N = int(SR * DUR)
@@ -25,13 +25,16 @@ CHORDS = [
     ( 98.00, [196.00, 246.94, 293.66]),  # G
 ]
 def chord_at(t):
-    return CHORDS[min(3, int(t // 5))]
+    return CHORDS[int(t // 5) % 4]   # cycle the progression across the full track
 
 def intensity(t):
-    for a, b, v in [(0,3,.5),(3,6,.72),(6,10,.9),(10,14,1.0),(14,17,.72),(17,20,.86)]:
+    # Sections match the video's scenes (hook, reveal, stages, scan, injection,
+    # containment peak, calm contrast, extension, outro).
+    for a, b, v in [(0,4,.5),(4,7,.72),(7,11,.8),(11,17,.9),(17,22,.85),
+                    (22,28,1.0),(28,32,.7),(32,36,.82),(36,40,.88)]:
         if a <= t < b: base = v; break
     else: base = .8
-    if t > 19.2: base *= max(0.0, (20.0 - t) / 0.8)   # outro fade
+    if t > 39.2: base *= max(0.0, (40.0 - t) / 0.8)   # outro fade
     return base
 
 # simple deterministic noise for hats
