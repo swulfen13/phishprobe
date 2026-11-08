@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root{
+    --canvas:#0b1120;--panel:#111a2e;--edge:#1e2a44;--panel2:#0a0f1e;
+    --safe:#22c55e;--susp:#f59e0b;--phish:#ef4444;--sky:#38bdf8;
+    --ink:#e2e8f0;--mut:#94a3b8;--dim:#64748b;--white:#fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  html,body{background:var(--canvas);}
+  .slide{
+    position:relative;width:1280px;height:720px;overflow:hidden;
+    background:radial-gradient(1100px 620px at 50% -10%, #16233f 0%, #0b1120 62%);
+    color:var(--ink);padding:66px 76px;page-break-after:always;
+    display:flex;flex-direction:column;
+  }
+  .slide:last-child{page-break-after:auto;}
+  .kicker{display:inline-flex;align-items:center;gap:9px;color:var(--sky);
+    font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+  h1{font-size:60px;font-weight:900;letter-spacing:-.02em;color:var(--white);line-height:1.04;}
+  h2{font-size:42px;font-weight:800;letter-spacing:-.02em;color:var(--white);line-height:1.08;}
+  .lead{font-size:23px;color:var(--mut);line-height:1.5;font-weight:500;}
+  .foot{position:absolute;left:76px;right:76px;bottom:30px;display:flex;
+    justify-content:space-between;align-items:center;color:var(--dim);font-size:14px;font-weight:600;}
+  .foot .brand{color:var(--mut);}
+  .shield{font-size:20px;}
+  .panel{background:var(--panel);border:1px solid var(--edge);border-radius:20px;
+    box-shadow:0 24px 60px -30px rgba(0,0,0,.8);}
+  .mono{font-family:'Consolas','SF Mono',monospace;}
+  .chip{display:inline-flex;align-items:center;gap:9px;background:var(--panel);
+    border:1px solid var(--edge);border-radius:999px;padding:9px 18px;font-size:16px;color:var(--ink);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+  .card{background:var(--panel);border:1px solid var(--edge);border-radius:18px;padding:26px 28px;}
+  .card .t{font-size:22px;font-weight:800;color:var(--white);margin-bottom:8px;}
+  .card .d{font-size:16px;color:var(--mut);line-height:1.5;}
+  .ic{font-size:30px;margin-bottom:12px;display:block;}
+  .big-verdict{font-size:52px;font-weight:900;}
+  ul.clean{list-style:none;}
+  ul.clean li{font-size:20px;color:#cbd5e1;line-height:1.5;margin:13px 0;
+    display:flex;gap:13px;align-items:flex-start;}
+  .bullet{color:var(--sky);font-weight:900;flex:none;}
+  /* cover */
+  .cover{align-items:center;justify-content:center;text-align:center;}
+  .cover .logo{font-size:84px;}
+  .cover h1{font-size:92px;margin-top:4px;}
+  .badge-row{display:flex;gap:14px;justify-content:center;margin-top:30px;flex-wrap:wrap;}
+  /* arch diagram */
+  .vm{border:1.5px dashed #27405f;border-radius:20px;padding:22px 24px 26px;position:relative;background:rgba(56,189,248,.03);}
+  .vm .vmlabel{position:absolute;top:-13px;left:24px;background:var(--canvas);padding:0 12px;
+    color:var(--sky);font-size:14px;font-weight:700;letter-spacing:.08em;}
+  .node{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:14px 16px;}
+  .node .nt{font-size:18px;font-weight:800;color:var(--white);}
+  .node .nd{font-size:13.5px;color:var(--mut);margin-top:3px;line-height:1.4;}
+  .arrow{color:var(--dim);font-size:22px;text-align:center;}
+  .ext{border-color:#334155;background:#0d1526;}
+  table.vt{width:100%;border-collapse:collapse;}
+  table.vt td{padding:16px 18px;border-top:1px solid var(--edge);vertical-align:top;}
+  table.vt tr:first-child td{border-top:none;}
+  table.vt .svc{font-size:19px;font-weight:800;color:var(--white);white-space:nowrap;width:270px;}
+  table.vt .role{font-size:16px;color:var(--mut);line-height:1.45;}
+  .tag-s{color:var(--safe);} .tag-w{color:var(--susp);} .tag-p{color:var(--phish);}
+  .hl{color:var(--sky);font-weight:700;}
+  .note{font-size:14px;color:var(--dim);}
+</style></head>
+<body>
+
+<!-- 1 · COVER -->
+<section class="slide cover">
+  <div class="logo">🛡️</div>
+  <h1>PhishProbe</h1>
+  <div class="lead" style="font-size:30px;color:#cbd5e1;margin-top:18px">Check a suspicious link — without opening it yourself.</div>
+  <div class="badge-row">
+    <span class="chip"><span class="shield">🧪</span> Disposable sandbox on Vultr</span>
+    <span class="chip">🤖 AI verdict: <span class="tag-s">safe</span> · <span class="tag-w">suspicious</span> · <span class="tag-p">phishing</span></span>
+  </div>
+  <div class="note" style="margin-top:34px">Vultr: Agent Rush · Challenge 01 — Blast Radius Zero</div>
+</section>
+
+<!-- 2 · PROBLEM -->
+<section class="slide">
+  <div class="kicker">🎯 The problem</div>
+  <h2 style="margin-top:16px">"Your parcel couldn't be delivered. Click here."</h2>
+  <div class="lead" style="margin-top:18px;max-width:1000px">
+    Almost everyone gets these texts and emails. One tap can leak your card details or
+    install malware. The people most at risk — older relatives, small businesses with no
+    IT team — can't tell a real link from a trap.
+  </div>
+  <div class="grid3" style="margin-top:38px">
+    <div class="card"><span class="ic">📱</span><div class="t">You can't tell</div><div class="d">A phishing URL looks almost identical to the real one.</div></div>
+    <div class="card"><span class="ic">⚠️</span><div class="t">Opening = risk</div><div class="d">Checking it yourself means visiting the attacker's page.</div></div>
+    <div class="card"><span class="ic">🏢</span><div class="t">No safety net</div><div class="d">No IT department, no filter, no second opinion.</div></div>
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>01 · Problem</span></div>
+</section>
+
+<!-- 3 · SOLUTION -->
+<section class="slide">
+  <div class="kicker">💡 The solution</div>
+  <h2 style="margin-top:16px">An AI agent opens the link for you — safely.</h2>
+  <div class="lead" style="margin-top:16px;max-width:1040px">
+    Paste the link instead of clicking it. The agent visits it inside a throwaway browser
+    in an <span class="hl">isolated Docker sandbox on Vultr</span>, follows every redirect,
+    screenshots the page, analyses it, and returns a plain-language verdict.
+  </div>
+  <div class="grid3" style="margin-top:36px">
+    <div class="card" style="border-color:rgba(34,197,94,.4)"><div class="big-verdict tag-s">🟢</div><div class="t" style="margin-top:8px">No signs of danger</div><div class="d">Nothing suspicious found — not a safety guarantee.</div></div>
+    <div class="card" style="border-color:rgba(245,158,11,.4)"><div class="big-verdict tag-w">🟡</div><div class="t" style="margin-top:8px">Suspicious</div><div class="d">Mixed signals worth a closer look.</div></div>
+    <div class="card" style="border-color:rgba(239,68,68,.4)"><div class="big-verdict tag-p">🔴</div><div class="t" style="margin-top:8px">Phishing / dangerous</div><div class="d">"Imitates a parcel service, asks for card data, wrong domain."</div></div>
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>02 · Solution</span></div>
+</section>
+
+<!-- 4 · HOW IT WORKS -->
+<section class="slide">
+  <div class="kicker">⚙️ How it works</div>
+  <h2 style="margin-top:16px">Two checks — fast first, deep second</h2>
+  <div class="grid2" style="margin-top:34px">
+    <div class="card">
+      <span class="chip" style="font-size:14px">⚡ Stage 1 · under 1 second</span>
+      <div class="t" style="margin-top:16px">Quick check</div>
+      <div class="d">Pure URL heuristics — homoglyphs (<span class="mono">paypa1</span>), shady TLDs,
+      raw-IP hosts, deep subdomains, shorteners, lure words — plus a cache. No browser.
+      This is what the browser extension calls on every link.</div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,.4)">
+      <span class="chip stage2" style="font-size:14px;background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.4);color:#bae6fd">🧪 Stage 2 · in the sandbox</span>
+      <div class="t" style="margin-top:16px">Deep scan</div>
+      <div class="d">The agent really opens the page: full redirect chain, desktop + mobile
+      screenshots, form/field map, network log, blocked downloads. A <span class="hl">vision
+      model</span> + text model produce the verdict. Streams live to the UI over SSE.</div>
+    </div>
+  </div>
+  <div class="lead" style="font-size:19px;margin-top:28px">
+    🔑 The agent loop (all LLM calls) runs in the <span class="hl">orchestrator</span>, never in the sandbox.
+    The sandbox only performs browser actions and returns data.
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>03 · How it works</span></div>
+</section>
+
+<!-- 5 · ARCHITECTURE -->
+<section class="slide">
+  <div class="kicker">🏗️ Architecture</div>
+  <h2 style="margin-top:14px">Everything runs on a Vultr VM</h2>
+  <div class="vm" style="margin-top:30px">
+    <div class="vmlabel">VULTR CLOUD COMPUTE VM · Ubuntu + Docker</div>
+    <div style="display:grid;grid-template-columns:1.1fr 32px 1.3fr 32px 1fr;align-items:center;gap:6px;margin-top:6px">
+      <div class="node"><div class="nt">Caddy · auto-HTTPS</div><div class="nd">web (Next.js) · live SSE view · /demo</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nt">api · FastAPI orchestrator</div><div class="nd">quick check · agent loop · verdict engine<br>holds the Vultr Inference key — nowhere else</div></div>
+      <div class="arrow">→</div>
+      <div class="node ext"><div class="nt">🧪 sandbox</div><div class="nd">throwaway · Playwright + Chromium<br>no secrets · non-root · read-only</div></div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:24px;grid-template-columns:1fr 1fr">
+    <div class="card" style="padding:18px 22px"><div class="t" style="font-size:18px">↑ LLM via Vultr Serverless Inference</div><div class="d">Text model = verdict · vision model = screenshot analysis. Only the <span class="hl">api</span> talks to it.</div></div>
+    <div class="card ext" style="padding:18px 22px"><div class="t" style="font-size:18px">↓ Sandbox → untrusted URL (internet only)</div><div class="d">One container per scan · isolated network · internal IPs blocked · destroyed after.</div></div>
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>04 · Architecture</span></div>
+</section>
+
+<!-- 6 · CONTAINMENT -->
+<section class="slide">
+  <div class="kicker tag-p" style="color:var(--phish)">🧯 Containment · the heart of the scoring</div>
+  <h2 style="margin-top:14px">Blast Radius <span style="color:var(--sky)">Zero</span></h2>
+  <div class="lead" style="margin-top:12px;max-width:1060px;font-size:20px">
+    Visiting an attacker-controlled page <i>is</i> the product — so containment is the product.
+    A compromised page finds nothing to steal and can't break out.
+  </div>
+  <div class="grid3" style="margin-top:26px;gap:16px">
+    <div class="card" style="padding:20px 22px"><span class="ic">🔒</span><div class="t" style="font-size:19px">No secrets</div><div class="d">The LLM key lives only in the orchestrator. Sandbox starts with <span class="mono">environment={}</span>.</div></div>
+    <div class="card" style="padding:20px 22px"><span class="ic">🚫</span><div class="t" style="font-size:19px">No internal access</div><div class="d">Can't reach host, api/db, private IPs or the metadata endpoint — blocked in-sandbox <i>and</i> by host iptables.</div></div>
+    <div class="card" style="padding:20px 22px"><span class="ic">⏱️</span><div class="t" style="font-size:19px">Hard limits</div><div class="d">Non-root, read-only, <span class="mono">cap_drop=ALL</span>, mem/CPU/PID + per-scan & per-action timeouts.</div></div>
+    <div class="card" style="padding:20px 22px"><span class="ic">⬇️</span><div class="t" style="font-size:19px">Downloads blocked</div><div class="d">Download events are logged and cancelled; nothing ever hits disk.</div></div>
+    <div class="card" style="padding:20px 22px"><span class="ic">🧬</span><div class="t" style="font-size:19px">Injection-proof</div><div class="d">Page content enters the prompt as fenced DATA. "Say SAFE" → forced 🔴, a deterministic hard floor.</div></div>
+    <div class="card" style="padding:20px 22px"><span class="ic">💥</span><div class="t" style="font-size:19px">Destroyed after</div><div class="d">Logs saved, then <span class="mono">kill() + remove()</span> after every single scan.</div></div>
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>05 · Containment</span></div>
+</section>
+
+<!-- 7 · VULTR -->
+<section class="slide">
+  <div class="kicker">☁️ Built on Vultr</div>
+  <h2 style="margin-top:14px">Vultr is the control plane — not just hosting</h2>
+  <div class="panel" style="margin-top:28px;padding:10px 28px">
+    <table class="vt">
+      <tr><td class="svc">Cloud Compute VM</td><td class="role">The entire control plane. Runs Caddy, the Next.js frontend, the FastAPI orchestrator, and launches/destroys every sandbox container via the Docker SDK.</td></tr>
+      <tr><td class="svc">Serverless Inference</td><td class="role"><b>Every</b> LLM call. OpenAI-compatible endpoint. A text model produces the verdict; a vision model analyses screenshots ("which brand does this imitate? login/payment page?").</td></tr>
+      <tr><td class="svc">Docker on the VM</td><td class="role">One throwaway, isolated sandbox container per scan. Built from <span class="mono">./sandbox</span>, torn down after each run.</td></tr>
+    </table>
+  </div>
+  <div class="lead" style="font-size:19px;margin-top:24px">
+    No Claude / OpenAI / other provider is called from the product — all inference goes through
+    <span class="mono hl">api/agent/llm.py</span>, which only ever talks to Vultr.
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>06 · Vultr services</span></div>
+</section>
+
+<!-- 8 · BUSINESS + ROADMAP -->
+<section class="slide">
+  <div class="kicker">📈 Business & roadmap</div>
+  <h2 style="margin-top:16px">From one link to a safety layer for everyone</h2>
+  <div class="grid3" style="margin-top:34px">
+    <div class="card"><span class="ic">👵</span><div class="t">Consumers</div><div class="d">Especially older people who get parcel, bank and government texts. Paste &amp; check.</div></div>
+    <div class="card"><span class="ic">🏪</span><div class="t">Small businesses</div><div class="d">No IT team. Staff get phishing mail. A second opinion in one click.</div></div>
+    <div class="card"><span class="ic">🧩</span><div class="t">B2B API</div><div class="d">Mail filters &amp; IT providers embed the same quick-check + deep-scan API.</div></div>
+  </div>
+  <div class="panel" style="margin-top:28px;padding:22px 28px">
+    <div class="t" style="font-size:19px;color:var(--white);font-weight:800">Roadmap</div>
+    <ul class="clean" style="margin-top:6px">
+      <li><span class="bullet">›</span> <b>Chrome extension</b> (already prototyped) — right-click → check, a 🟢/🟡/🔴 badge on every page.</li>
+      <li><span class="bullet">›</span> <b>Freemium</b> for consumers, <b>paid B2B API</b> for mail filters and IT service providers.</li>
+    </ul>
+  </div>
+  <div class="foot"><span class="brand">🛡️ PhishProbe</span><span>07 · Business</span></div>
+</section>
+
+<!-- 9 · CLOSE -->
+<section class="slide cover">
+  <div class="logo" style="font-size:66px">🛡️</div>
+  <h1 style="font-size:70px">PhishProbe</h1>
+  <div class="lead" style="font-size:26px;color:#cbd5e1;margin-top:16px">
+    One link. <span style="color:var(--sky)">Zero blast radius.</span> Built on Vultr.
+  </div>
+  <div class="badge-row" style="margin-top:32px">
+    <span class="chip mono">🌐 192.248.159.54.nip.io</span>
+    <span class="chip mono">💻 github.com/swulfen13/phishprobe</span>
+  </div>
+  <div class="note" style="margin-top:30px">An aid, not a security guarantee. 🟢 means "no signs of danger found".</div>
+</section>
+
+</body></html>
